@@ -1,3 +1,38 @@
+Approach 1 using ECS:
+
+             +------------+
+             |   Client   |
+             +------------+
+                    │
+                    ▼
+             +------------+
+             |     ALB    |
+             +------------+
+                    │
+                    ▼
+             +------------+
+             |    ECS     |
+             +------------+
+                    │
+                    ▼
+             +------------+
+             |     RDS    |
+             +------------+
+                    │
+                    ▼
+             +------------+
+             |     ECR    |
+             +------------+
+
+1. Client: End-user who accesses the Flask app through a web browser.
+2. Application Load Balancer (ALB) : This is used to distribute incoming traffic to multiple instances of the Flask app running in Amazon Elastic Container Service (ECS). Load balancers can be set up with target groups, and the Flask app instances can be added to those target groups.
+3. Amazon Elastic Container Service (ECS): This is used to run Docker containers of the Flask app. ECS can be configured to use Auto Scaling Groups to automatically scale the number of instances based on traffic load.
+4. Amazon RDS: This is used to host the SQLite database used by the Flask app.
+5. Amazon Elastic Container Registry (ECR): This is used to store and manage the Docker container images for the Flask app. ECR can be set up to integrate with ECS, so that ECS can automatically pull the latest version of the Docker container image from ECR.
+We can blue/green architecture to achieve zero downtime deployment by using the following steps:
+
+Approach 2 using ASG:
+
                       ┌────────────────┐
                       │    Internet    │
                       └────────────────┘
